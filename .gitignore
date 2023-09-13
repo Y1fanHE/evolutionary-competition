@@ -1,4 +1,5 @@
 # User-defined
+*.drawio
 .python-version
 *.pdf
 *.sol
