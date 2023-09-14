@@ -11,7 +11,8 @@ from functools import partial
 from deap import algorithms, base, creator, tools, gp
 from ea import Problem
 
-class EvolvedCompetition:
+
+class Competition:
 
     def __init__(self,
                  metric: Callable,
@@ -70,7 +71,7 @@ class EvolvedCompetition:
                               gp.compile,
                               pset=self.pset)
         self.toolbox.register("evaluate",
-                              self._evalEvoComp,
+                              self._eval_competition,
                               metric=self.metric,
                               xl=self.xl,
                               xu=self.xu,
@@ -80,15 +81,15 @@ class EvolvedCompetition:
                               rep=self.rep)
         return self.toolbox
 
-    def _evalEvoComp(self,
-                     individual,
-                     metric: Callable,
-                     xl: float,
-                     xu: float,
-                     n_var: int,
-                     alg1: Sequence,
-                     alg2: Sequence,
-                     rep: int):
+    def _eval_competition(self,
+                          individual,
+                          metric: Callable,
+                          xl: float,
+                          xu: float,
+                          n_var: int,
+                          alg1: Sequence,
+                          alg2: Sequence,
+                          rep: int):
         func = self.toolbox.compile(expr=individual)
         problem = Problem(func=func,
                           xl=xl,
@@ -116,7 +117,7 @@ class EvolvedCompetition:
         except ValueError:
             return 0,
 
-    def run(self,
+    def evolve(self,
             population_size: int,
             max_generation: int,
             tournament_size: int = 7,
@@ -204,23 +205,26 @@ class EvolvedCompetition:
         X, Y = numpy.meshgrid(x, x)
         Z = problem.func(X, Y)
 
-        plt.contour(X, Y, Z, levels=100, cmap="Greys_r")
+        plt.contour(X, Y, Z, levels=64, cmap="Greys_r")
         plt.colorbar()
         plt.scatter(pop1[:,0],
                     pop1[:,1],
-                    ec="r",
+                    ec="darkred",
                     fc="none",
                     marker="o",
                     label=self.alg1[-1],
                     zorder=2)
         plt.scatter(pop2[:,0],
                     pop2[:,1],
-                    ec="b",
+                    ec="darkblue",
                     fc="none",
                     marker="x",
                     label=self.alg2[-1],
                     zorder=2)
-        plt.legend()
+        plt.legend(loc="lower center",
+                   bbox_to_anchor=(0.5, 1),
+                   ncol=2,
+                   frameon=False)
         if target:
             plt.savefig(target)
         else:
