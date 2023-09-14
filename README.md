@@ -33,7 +33,7 @@ $$\frac{6x_0x_1^2\log(\cos\frac{x_1}{8})(\frac{x_0}{9}-\sin{x_0})}{\cos(\sin(\si
 
 <center><img src=img/eg3.svg /></center>
 
-$$\frac{4x_0}{x_1}-\sin{4}$$
+$$\sin(7)x_0x_1\log(\log{x_0^2}-\sin{x_1})$$
 
 <center><img src=img/eg4.svg /></center>
 
