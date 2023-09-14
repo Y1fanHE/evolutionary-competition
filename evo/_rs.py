@@ -4,7 +4,7 @@ created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
 import numpy as np
-from ea._base import Problem, Individual
+from evo._base import Problem, Individual
 
 
 def random_search(problem: Problem,

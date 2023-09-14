@@ -2,7 +2,7 @@
 created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
-from ea import de_rand_1_bin, particle_swarm_optimization
+from evo import de_rand_1_bin, particle_swarm_optimization
 from comp.metrics import wasserstein_distance
 from comp import Competition
 
@@ -40,15 +40,15 @@ if __name__ == "__main__":
     )
 
     comp.evolve(
-        population_size = 20,
-        max_generation  = 5,
+        population_size = 10,
+        max_generation  = 6,
         tournament_size = 7,
         crossover_rate  = 0.8,
         mutation_rate   = 0.1,
-        seed            = 318,
+        seed            = 1000,
         verbose         = True
     )
 
-    comp.plot_space(target="out.pdf")
+    comp.plot_space(target="out.svg")
     comp.plot_tree(target="out_tree.pdf")
     comp.save(target="out.sol")

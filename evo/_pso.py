@@ -5,7 +5,7 @@ on Sept. 12, 2023
 """
 import numpy as np
 from typing import Sequence, Union
-from ea._base import Problem, Individual
+from evo._base import Problem, Individual
 
 
 def particle_swarm_optimization(problem: Problem,

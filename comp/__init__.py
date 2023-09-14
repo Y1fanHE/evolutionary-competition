@@ -9,7 +9,7 @@ import pygraphviz as pgv
 from typing import Callable, Sequence
 from functools import partial
 from deap import algorithms, base, creator, tools, gp
-from ea import Problem
+from evo import Problem
 
 
 class Competition:
