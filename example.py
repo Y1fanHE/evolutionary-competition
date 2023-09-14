@@ -40,8 +40,8 @@ if __name__ == "__main__":
     )
 
     comp.evolve(
-        population_size = 200,
-        max_generation  = 50,
+        population_size = 20,
+        max_generation  = 5,
         tournament_size = 7,
         crossover_rate  = 0.8,
         mutation_rate   = 0.1,
