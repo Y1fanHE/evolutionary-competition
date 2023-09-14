@@ -4,7 +4,7 @@ on Sept. 12, 2023
 """
 from ea import de_rand_1_bin, particle_swarm_optimization
 from comp.metrics import wasserstein_distance
-from comp import EvolvedCompetition as EvoComp
+from comp import Competition
 
 
 de = (
@@ -29,24 +29,26 @@ pso = (
 
 if __name__ == "__main__":
 
-    ec = EvoComp(
+    comp = Competition(
         metric      = wasserstein_distance,
         algorithm1  = de,
         algorithm2  = pso,
         lower_bound = -5,
         upper_bound = 5,
         dimension   = 2,
-        repetition  = 3
+        repetition  = 1
     )
 
-    ec.run(
+    comp.evolve(
         population_size = 200,
         max_generation  = 50,
         tournament_size = 7,
-        crossover_rate  = 0.7,
+        crossover_rate  = 0.8,
         mutation_rate   = 0.1,
-        seed            = 1995
+        seed            = 318,
+        verbose         = True
     )
 
-    ec.plot(target = "out.pdf")
-    ec.save(target = "out.sol")
+    comp.plot_space(target="out.pdf")
+    comp.plot_tree(target="out_tree.pdf")
+    comp.save(target="out.sol")
