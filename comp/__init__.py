@@ -118,16 +118,16 @@ class Competition:
             return 0,
 
     def evolve(self,
-            population_size: int,
-            max_generation: int,
-            tournament_size: int = 7,
-            crossover_rate: int = 0.8,
-            mutation_rate: int = 0.1,
-            init_tree_height: Sequence[int] = (3, 6),
-            mut_tree_height: Sequence[int] = (0, 5),
-            max_tree_height: int = 10,
-            seed: int = None,
-            verbose: bool = False):
+               population_size: int,
+               max_generation: int,
+               tournament_size: int = 7,
+               crossover_rate: int = 0.8,
+               mutation_rate: int = 0.1,
+               init_tree_height: Sequence[int] = (3, 6),
+               mut_tree_height: Sequence[int] = (0, 5),
+               max_tree_height: int = 10,
+               seed: int = None,
+               verbose: bool = False):
         if seed:
             random.seed(seed)
 
