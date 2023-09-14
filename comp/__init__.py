@@ -5,9 +5,9 @@ on Sept. 12, 2023
 """
 import operator, random, numpy
 import matplotlib.pyplot as plt
+import pygraphviz as pgv
 from typing import Callable, Sequence
 from functools import partial
-from multiprocessing import Pool
 from deap import algorithms, base, creator, tools, gp
 from ea import Problem
 
@@ -185,7 +185,7 @@ class EvolvedCompetition:
         self.solution = hof[0]
         return self.solution
 
-    def plot(self, target: str = None):
+    def plot_space(self, target: str = None):
         func = self.toolbox.compile(expr=self.solution)
         problem = Problem(func=func,
                           xl=self.xl,
@@ -193,20 +193,18 @@ class EvolvedCompetition:
                           n_var=self.n_var,
                           input_mode="args")
         cols = [f"x{i}" for i in range(problem.n_var)]
-        pop1 =\
-        self.alg1[0](problem,
-                     seed=1000,
-                     **self.alg1[1])[cols].values
-        pop2 =\
-        self.alg2[0](problem,
-                     seed=1000,
-                     **self.alg2[1])[cols].values
+        pop1 = self.alg1[0](problem,
+                            seed=1000,
+                            **self.alg1[1])[cols].values
+        pop2 = self.alg2[0](problem,
+                            seed=1000,
+                            **self.alg2[1])[cols].values
 
         x = numpy.linspace(self.xl, self.xu, 100)
         X, Y = numpy.meshgrid(x, x)
         Z = problem.func(X, Y)
 
-        plt.contour(X, Y, Z, levels=50)
+        plt.contour(X, Y, Z, levels=100, cmap="Greys_r")
         plt.colorbar()
         plt.scatter(pop1[:,0],
                     pop1[:,1],
@@ -228,11 +226,23 @@ class EvolvedCompetition:
         else:
             plt.show()
 
+    def plot_tree(self, target: str = None):
+        nodes, edges, labels = gp.graph(self.solution)
+        g = pgv.AGraph()
+        g.add_nodes_from(nodes)
+        g.add_edges_from(edges)
+        g.layout(prog="dot")
+        for i in nodes:
+            n = g.get_node(i)
+            n.attr["label"] = labels[i]
+        g.draw(target)
+
     def save(self, target: str):
         with open(target, "w") as f:
-            f.write(self.solution)
+            f.write(str(self.solution))
 
     def load(self, source: str):
+        # TODO: test this method
         with open(source, "r") as f:
             self.solution = self.toolbox.individual(
                 gp.PrimitiveTree.from_string(f[0],
