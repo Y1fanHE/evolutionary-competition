@@ -126,7 +126,8 @@ class Competition:
             init_tree_height: Sequence[int] = (3, 6),
             mut_tree_height: Sequence[int] = (0, 5),
             max_tree_height: int = 10,
-            seed: int = None):
+            seed: int = None,
+            verbose: bool = False):
         if seed:
             random.seed(seed)
 
@@ -170,19 +171,19 @@ class Competition:
         stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
         stats_size = tools.Statistics(len)
         mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
-        mstats.register("avg", numpy.mean)
-        mstats.register("std", numpy.std)
-        mstats.register("min", numpy.min)
-        mstats.register("max", numpy.max)
+        mstats.register("avg", lambda x: round(numpy.mean(x),3))
+        mstats.register("std", lambda x: round(numpy.std(x),3))
+        mstats.register("min", lambda x: round(numpy.min(x),3))
+        mstats.register("max", lambda x: round(numpy.max(x),3))
 
         pop, _ = algorithms.eaSimple(pop,
                                      self.toolbox,
                                      crossover_rate,
                                      mutation_rate,
-                                     max_generation,
+                                     max_generation-1,
                                      stats=mstats,
                                      halloffame=hof,
-                                     verbose=True)
+                                     verbose=verbose)
         self.solution = hof[0]
         return self.solution
 
