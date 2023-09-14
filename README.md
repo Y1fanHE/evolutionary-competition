@@ -17,7 +17,12 @@ Generate benchmark functions to differ a pair of evolutionary algorithms based o
 
 ### Usage
 
-See `gp-example.py`
+See `example.py`
+
+<img src=img/eg1.svg width=360/>
+<img src=img/eg2.svg width=360/>
+<img src=img/eg3.svg width=360/>
+<img src=img/eg4.svg width=360/>
 
 ### Evolutionary Algorithms
 
