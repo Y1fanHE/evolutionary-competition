@@ -6,7 +6,7 @@
 
 Generate benchmark functions to differ a pair of evolutionary algorithms based on genetic programming algorithm
 
-![flowchart](flow.svg)
+<p align="center"><img src="flow.svg" /></p>
 
 ### Requirements
 
