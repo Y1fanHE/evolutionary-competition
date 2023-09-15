@@ -12,6 +12,9 @@ from deap import algorithms, base, creator, tools, gp
 from evo import Problem
 
 
+# TODO: make it flexible to use linear gp, pushgp, ...
+
+
 class Competition:
 
     def __init__(self,
@@ -144,7 +147,7 @@ class Competition:
                               tools.initRepeat,
                               list,
                               self.toolbox.individual)
-        
+
         self.toolbox.register("select",
                               tools.selTournament,
                               tournsize=tournament_size)

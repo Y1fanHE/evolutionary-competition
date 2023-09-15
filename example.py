@@ -1,4 +1,5 @@
 """
+Example Code for Evolutionary Competition
 created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
@@ -49,6 +50,6 @@ if __name__ == "__main__":
         verbose         = True
     )
 
-    comp.plot_space(target="out.svg")
-    comp.plot_tree(target="out_tree.pdf")
+    comp.plot_space(target="out.png")
+    comp.plot_tree(target="out_tree.png")
     comp.save(target="out.sol")
