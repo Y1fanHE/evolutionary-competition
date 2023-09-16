@@ -50,9 +50,9 @@ $$\sin(7)xy\log(\log{x^2}-\sin{y})$$
 
 ## Todo
 
-- [ ] write README file
+- [x] write README file
 - [ ] check high dimension cases
-- [ ] add multiprocessing
+- [x] add multiprocessing
 - [ ] implement map-elite gp
 - [ ] add more eas
 - [ ] add new metrics
