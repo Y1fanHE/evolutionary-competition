@@ -18,7 +18,7 @@ Generate benchmark functions to differ a pair of evolutionary algorithms based o
 
 ### Installation
 
-Install Python and Graphviz, then install the library in this repo.
+Install Python and [Graphviz](https://graphviz.org/), then install the library in this repo.
 
 ```bash
 pip install git+https://github.com/Y1fanHE/evolutionary-competition.git
