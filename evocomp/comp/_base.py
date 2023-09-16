@@ -9,7 +9,7 @@ import pygraphviz as pgv
 from typing import Callable, Sequence
 from functools import partial
 from deap import base, creator, gp
-from evo._base import Problem
+from evocomp.evo._base import Problem
 
 
 # TODO: make it flexible to use linear gp, pushgp, ...

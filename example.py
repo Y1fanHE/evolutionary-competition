@@ -3,10 +3,10 @@ Example Code for Evolutionary Competition
 created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
-from evo import de_rand_1_bin, particle_swarm_optimization
-from comp import Competition
-from comp.metrics import wasserstein_distance
-from comp.gp import simple
+from evocomp.evo import de_rand_1_bin, particle_swarm_optimization
+from evocomp.comp import Competition
+from evocomp.comp.metrics import wasserstein_distance
+from evocomp.comp.gp import simple
 
 
 de = (
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         tournament_size = 7,
         crossover_rate  = 0.8,
         mutation_rate   = 0.1,
-        parallelism     = False,
+        parallelism     = 5,
         seed            = 1000,
         verbose         = True
     )
