@@ -49,7 +49,7 @@ if __name__ == "__main__":
         tournament_size = 7,
         crossover_rate  = 0.8,
         mutation_rate   = 0.1,
-        parallelism     = 5,
+        parallelism     = False,
         seed            = 1000,
         verbose         = True
     )

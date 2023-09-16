@@ -3,13 +3,12 @@ Simple EA
 created by Yifan He (heyif@outlook.com)
 on Sept. 16, 2023
 """
-import operator, random
+import random
 import numpy as np
 from typing import Sequence
 from multiprocessing import Pool
 from deap import creator, tools, gp
 from deap.base import Toolbox
-from deap.algorithms import varAnd
 
 
 def simple(pset: gp.PrimitiveSet,
