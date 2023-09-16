@@ -128,30 +128,8 @@ class Competition:
         except ValueError:
             return 0,
 
-    def evolve(self,
-               method: Callable,
-               population_size: int,
-               max_generation: int,
-               tournament_size: int = 7,
-               crossover_rate: int = 0.8,
-               mutation_rate: int = 0.1,
-               init_tree_height: Sequence[int] = (3, 6),
-               mut_tree_height: Sequence[int] = (0, 5),
-               max_tree_height: int = 10,
-               seed: int = None,
-               verbose: bool = False):
-        self.solution = method(self.pset,
-                               self.toolbox,
-                               population_size,
-                               max_generation,
-                               tournament_size,
-                               crossover_rate,
-                               mutation_rate,
-                               init_tree_height,
-                               mut_tree_height,
-                               max_tree_height,
-                               seed,
-                               verbose)
+    def evolve(self, method: Callable, **kwargs):
+        self.solution = method(self.pset, self.toolbox, **kwargs)
         return self.solution
 
     def plot_space(self, target: str = None):
