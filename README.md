@@ -29,7 +29,7 @@ pip install git+https://github.com/Y1fanHE/evolutionary-competition.git
 Create a tuple for DE.
 
 ```python
-from evo import de_rand_1_bin
+from evocomp.evo import de_rand_1_bin
 
 de = (
     de_rand_1_bin,                # de
@@ -44,7 +44,7 @@ de = (
 Create a tuple for PSO.
 
 ```python
-from evo import particle_swarm_optimization
+from evocomp.evo import particle_swarm_optimization
 
 pso = (
     particle_swarm_optimization,  # pso
@@ -60,8 +60,8 @@ pso = (
 Create a `Competition` using `wasserstein_distance`.
 
 ```python
-from comp import Competition
-from comp.metrics import wasserstein_distance
+from evocomp.comp import Competition
+from evocomp.comp.metrics import wasserstein_distance
 
 comp = Competition(
     metric      = wasserstein_distance, # distance metric
@@ -78,7 +78,7 @@ comp = Competition(
 Evolve the `Competition` by `simple` EA.
 
 ```python
-from comp.gp import simple
+from evocomp.comp.gp import simple
 
 comp.evolve(                            # gp parameters
     method          = simple,
