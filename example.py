@@ -4,8 +4,9 @@ created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
 from evo import de_rand_1_bin, particle_swarm_optimization
-from comp.metrics import wasserstein_distance
 from comp import Competition
+from comp.metrics import wasserstein_distance
+from comp.gp import simple
 
 
 de = (
@@ -31,16 +32,18 @@ pso = (
 if __name__ == "__main__":
 
     comp = Competition(
-        metric      = wasserstein_distance,
-        algorithm1  = de,
+        metric      = wasserstein_distance, # distance metric
+        algorithm1  = de,                   # two eas
         algorithm2  = pso,
-        lower_bound = -5,
+        lower_bound = -5,                   # bounds of search space
         upper_bound = 5,
-        dimension   = 2,
-        repetition  = 1
+        dimension   = 2,                    # dimension of search space
+        repetition  = 1,                    # repetition of ea runs
+        mode        = "differ"              # mode: differ/match
     )
 
-    comp.evolve(
+    comp.evolve(                            # gp parameters
+        method          = simple,
         population_size = 10,
         max_generation  = 6,
         tournament_size = 7,
@@ -50,6 +53,6 @@ if __name__ == "__main__":
         verbose         = True
     )
 
-    comp.plot_space(target="out.png")
-    comp.plot_tree(target="out_tree.png")
-    comp.save(target="out.sol")
+    comp.plot_space(target="out.png")       # contor plot
+    comp.plot_tree(target="out_tree.png")   # tree plot
+    comp.save(target="out.sol")             # text file
