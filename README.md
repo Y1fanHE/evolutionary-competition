@@ -1,24 +1,32 @@
 # Evolutionary Competition
 
-> compete the "evolution" and evolve the "competition"
+> compete the "evolution" and evolve the "competition"!
 
 ## Generating Benchmark by GP
 
-Generate benchmark functions to differ a pair of evolutionary algorithms based on genetic programming algorithm
+Generate benchmark functions to differ a pair of evolutionary algorithms based on genetic programming algorithm.
 
 <p align="center"><img src="img/flow.svg" /></p>
 
 ### Requirements
 
-- Python 3.9
+- Python 3.9 (tested, other version should also work)
 - deap
 - scipy
 - matplotlib
 - pygraphviz
 
+### Installation
+
+Install Python and Graphviz, then install the library in this repo.
+
+```bash
+pip install git+https://github.com/Y1fanHE/evolutionary-competition.git
+```
+
 ### Usage
 
-Create a tuple for DE
+Create a tuple for DE.
 
 ```python
 from evo import de_rand_1_bin
@@ -33,7 +41,7 @@ de = (
 )
 ```
 
-Create a tuple for PSO
+Create a tuple for PSO.
 
 ```python
 from evo import particle_swarm_optimization
@@ -49,7 +57,7 @@ pso = (
 )
 ```
 
-Create a `Competition` using `wasserstein_distance`
+Create a `Competition` using `wasserstein_distance`.
 
 ```python
 from comp import Competition
@@ -67,7 +75,7 @@ comp = Competition(
 )
 ```
 
-Evolve the `Competition` by `simple` EA
+Evolve the `Competition` by `simple` EA.
 
 ```python
 from comp.gp import simple
@@ -84,7 +92,7 @@ comp.evolve(                            # gp parameters
 )
 ```
 
-Plot the results
+Plot the results.
 
 ```python
 comp.plot_space(target="out.png")       # contor plot
@@ -92,7 +100,11 @@ comp.plot_tree(target="out_tree.png")   # tree plot
 comp.save(target="out.sol")             # text file
 ```
 
-Also see `example.py` for a multiprocessing example
+Also see `example.py` for a multiprocessing example.
+
+```python
+python -W ignore example.py
+```
 
 ### The Generated Benchmark Functions
 
