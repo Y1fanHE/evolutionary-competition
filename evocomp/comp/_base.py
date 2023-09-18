@@ -162,8 +162,7 @@ class Competition:
                     zorder=2)
         plt.scatter(pop2[:,0],
                     pop2[:,1],
-                    ec="darkblue",
-                    fc="none",
+                    c="darkblue",
                     marker="x",
                     label=self.alg2[-1],
                     zorder=2)
