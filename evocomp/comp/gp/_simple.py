@@ -4,10 +4,11 @@ created by Yifan He (heyif@outlook.com)
 on Sept. 16, 2023
 """
 import random
+import copy
 import numpy as np
 from typing import Sequence
 from multiprocessing import Pool
-from deap import creator, tools, gp
+from deap import algorithms, creator, tools, gp
 from deap.base import Toolbox
 
 
@@ -27,45 +28,46 @@ def simple(pset: gp.PrimitiveSet,
     if seed:
         random.seed(seed)
 
+    toolbox_ = copy.copy(toolbox)
+
+    toolbox_.register("expr",
+                      gp.genHalfAndHalf,
+                      pset=pset,
+                      min_=init_tree_height[0],
+                      max_=init_tree_height[1])
+    toolbox_.register("individual",
+                      tools.initIterate,
+                      creator.Individual,
+                      toolbox_.expr)
+    toolbox_.register("population",
+                      tools.initRepeat,
+                      list,
+                      toolbox_.individual)
     if parallelism:
         pool = Pool(parallelism)
+        toolbox_.register("map", pool.map)
+    toolbox_.register("select",
+                      tools.selTournament,
+                      tournsize=tournament_size)
+    toolbox_.register("mate",
+                      gp.cxOnePoint)
+    toolbox_.register("expr_mut",
+                      gp.genFull,
+                      min_=mut_tree_height[0],
+                      max_=mut_tree_height[1])
+    toolbox_.register("mutate",
+                      gp.mutUniform,
+                      expr=toolbox_.expr_mut,
+                      pset=pset)
 
-    toolbox.register("expr",
-                     gp.genHalfAndHalf,
-                     pset=pset,
-                     min_=init_tree_height[0],
-                     max_=init_tree_height[1])
-    toolbox.register("individual",
-                     tools.initIterate,
-                     creator.Individual,
-                     toolbox.expr)
-    toolbox.register("population",
-                     tools.initRepeat,
-                     list,
-                     toolbox.individual)
-    toolbox.register("select",
-                     tools.selTournament,
-                     tournsize=tournament_size)
-    toolbox.register("mate",
-                     gp.cxOnePoint)
-    toolbox.register("expr_mut",
-                     gp.genFull,
-                     min_=mut_tree_height[0],
-                     max_=mut_tree_height[1])
-    toolbox.register("mutate",
-                     gp.mutUniform,
-                     expr=toolbox.expr_mut,
-                     pset=pset)
+    toolbox_.decorate("mate",
+                      gp.staticLimit(key=height,
+                                    max_value=max_tree_height))
+    toolbox_.decorate("mutate",
+                      gp.staticLimit(key=height,
+                                    max_value=max_tree_height))
 
-    # TODO: multiprocessing not working with these lines below!
-    # toolbox.decorate("mate",
-    #                  gp.staticLimit(key=lambda t: t.height,
-    #                                 max_value=max_tree_height))
-    # toolbox.decorate("mutate",
-    #                  gp.staticLimit(key=lambda t: t.height,
-    #                                 max_value=max_tree_height))
-
-    pop = toolbox.population(n=population_size)
+    pop = toolbox_.population(n=population_size)
     hof = tools.HallOfFame(1)
 
     stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
@@ -79,59 +81,18 @@ def simple(pset: gp.PrimitiveSet,
     logbook = tools.Logbook()
     logbook.header = ["gen", "nevals"] + (mstats.fields if mstats else [])
 
-    invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-    if not parallelism:
-        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-    else:
-        fitnesses = pool.map(toolbox.evaluate, invalid_ind)
-    for ind, fit in zip(invalid_ind, fitnesses):
-        ind.fitness.values = fit
-
-    if hof is not None:
-        hof.update(pop)
-
-    record = mstats.compile(pop) if mstats else {}
-    logbook.record(gen=0, nevals=len(invalid_ind), **record)
-    if verbose:
-        print(logbook.stream)
-
-    for gen in range(1, max_generation):
-        offspring = toolbox.select(pop, len(pop))
-        offspring = [toolbox.clone(ind) for ind in pop]
-
-        for i in range(1, len(offspring), 2):
-            if random.random() < crossover_rate:
-                child1, child2 = toolbox.mate(offspring[i - 1],
-                                              offspring[i])
-                if child1.height <= max_tree_height and \
-                    child2.height <= max_tree_height:
-                    offspring[i - 1], offspring[i] = child1, child2
-                del offspring[i - 1].fitness.values, offspring[i].fitness.values
-
-        for i in range(len(offspring)):
-            if random.random() < mutation_rate:
-                child, = toolbox.mutate(offspring[i])
-                if child.height <= max_tree_height:
-                    offspring[i] = child
-                del offspring[i].fitness.values
-
-        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        if not parallelism:
-            fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-        else:
-            fitnesses = pool.map(toolbox.evaluate, invalid_ind)
-        for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit
-
-        if hof is not None:
-            hof.update(offspring)
-
-        pop[:] = offspring
-
-        record = mstats.compile(pop) if mstats else {}
-        logbook.record(gen=gen, nevals=len(invalid_ind), **record)
-        if verbose:
-            print(logbook.stream)
+    algorithms.eaSimple(pop,
+                        toolbox_,
+                        crossover_rate,
+                        mutation_rate,
+                        max_generation-1,
+                        mstats,
+                        hof,
+                        verbose)
 
     solution = hof[0]
     return solution
+
+
+def height(t):
+    return t.height
