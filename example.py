@@ -10,7 +10,7 @@ from evocomp.comp.samplers import last_evaluations
 from evocomp.comp.gp import simple
 
 
-de1 = (
+de = (
     de_rand_1_bin,                # de
     dict(n_eval = 2000,           # parameters
          n_pop  = 20,
@@ -19,8 +19,8 @@ de1 = (
     "DE"                          # alias
 )
 
-de2 = (
-    de_rand_1_bin,                # de
+pso = (
+    particle_swarm_optimization,  # pso
     dict(n_eval = 2000,           # parameters
          n_pop  = 20,
          F      = 0.1,
@@ -28,31 +28,13 @@ de2 = (
     "PSO"                         # alias
 )
 
-de1_test = (
-    de_rand_1_bin,                # de
-    dict(n_eval = 40000,          # parameters
-         n_pop  = 20,
-         F      = 0.5,
-         CR     = 0.5),
-    "DE1"                         # alias
-)
-
-de2_test = (
-    de_rand_1_bin,                # de
-    dict(n_eval = 40000,          # parameters
-         n_pop  = 20,
-         F      = 0.1,
-         CR     = 0.5),
-    "DE2"                        # alias
-)
-
 
 if __name__ == "__main__":
 
     comp = Competition(
         metric      = wasserstein_distance, # distance metric
-        algorithm1  = de1,                  # two eas
-        algorithm2  = de2,
+        algorithm1  = de,                   # two eas
+        algorithm2  = pso,
         sampler     = (last_evaluations, [20]),
         lower_bound = -5,                   # bounds of search space
         upper_bound = 5,
@@ -75,32 +57,10 @@ if __name__ == "__main__":
     )
 
     comp.plot_space(                        # contor plot
-        target     = "train.png",
-        algorithm1 = de1,
-        algorithm2 = de2,
+        target     = "out.png",
+        algorithm1 = de,
+        algorithm2 = pso,
         sampler    = (last_evaluations, [20]),
-        seed       = 1000
-    )
-
-    comp.plot_space(                        # contor plot
-        target     = "train_all.png",
-        algorithm1 = de1,
-        algorithm2 = de2,
-        seed       = 1000
-    )
-
-    comp.plot_space(                        # contor plot
-        target     = "test.png",
-        algorithm1 = de1_test,
-        algorithm2 = de2_test,
-        sampler    = (last_evaluations, [20]),
-        seed       = 1000
-    )
-
-    comp.plot_space(                        # contor plot
-        target     = "test_all.png",
-        algorithm1 = de1_test,
-        algorithm2 = de2_test,
         seed       = 1000
     )
 
