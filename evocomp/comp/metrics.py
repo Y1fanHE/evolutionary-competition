@@ -7,6 +7,10 @@ import numpy as np
 from scipy.stats import wasserstein_distance as wass_dist
 
 
+def euclidean_distance(solution1, solution2):
+    return np.linalg.norm(solution1-solution2)
+
+
 def wasserstein_distance(population1, population2):
     pop1 = np.array(population1)
     pop2 = np.array(population2)

@@ -16,6 +16,28 @@ from evocomp.comp.samplers import all
 # TODO: make it flexible to use linear gp, pushgp, ...
 
 
+def divide(left, right):
+    with np.errstate(divide="ignore", invalid="ignore"):
+        x = np.divide(left, right)
+        if isinstance(x, np.ndarray):
+            x[np.isinf(x)] = 1
+            x[np.isnan(x)] = 1
+        elif np.isinf(x) or np.isnan(x):
+            x = 1
+    return x
+
+
+def log(a):
+    with np.errstate(divide="ignore", invalid="ignore"):
+        x = np.log(np.abs(a))
+        if isinstance(x, np.ndarray):
+            x[np.isinf(x)] = 1
+            x[np.isnan(x)] = 1
+        elif np.isinf(x) or np.isnan(x):
+            x = 1
+    return x
+
+
 class Competition:
 
     def __init__(self,
@@ -62,7 +84,7 @@ class Competition:
         self.pset.addPrimitive(np.multiply,
                                2,
                                "mul")
-        self.pset.addPrimitive(np.divide,
+        self.pset.addPrimitive(divide,
                                2,
                                "div")
         self.pset.addPrimitive(np.negative,
@@ -74,7 +96,7 @@ class Competition:
         self.pset.addPrimitive(np.sin,
                                1,
                                "sin")
-        self.pset.addPrimitive(np.log,
+        self.pset.addPrimitive(log,
                                1,
                                "log")
         self.pset.addEphemeralConstant("rnd",
@@ -170,20 +192,22 @@ class Competition:
                           n_var=self.n_var,
                           input_mode="args")
         cols = [f"x{i}" for i in range(problem.n_var)]
-        pop1 = sampler[0](alg1[0](problem,
+        sam1 = sampler[0](alg1[0](problem,
                                   seed=seed,
                                   **alg1[1]),
-                          *sampler[1])[cols].values
-        pop2 = sampler[0](alg2[0](problem,
+                          *sampler[1])
+        sam2 = sampler[0](alg2[0](problem,
                                   seed=seed,
                                   **alg2[1]),
-                          *sampler[1])[cols].values
+                          *sampler[1])
+        pop1 = sam1[cols].values
+        pop2 = sam2[cols].values
 
         x = np.linspace(self.xl, self.xu, 100)
         X, Y = np.meshgrid(x, x)
         Z = problem.func(X, Y)
 
-        plt.contourf(X, Y, Z, levels=64, cmap="Greys_r")
+        plt.contour(X, Y, Z)
         plt.colorbar()
         plt.scatter(pop1[:,0],
                     pop1[:,1],
