@@ -4,47 +4,6 @@ created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
 import pandas as pd
-import numpy as np
-
-
-add = np.add
-sub = np.subtract
-mul = np.multiply
-neg = np.negative
-cos = np.cos
-sin = np.sin
-
-
-def div(left, right):
-    with np.errstate(divide="ignore", invalid="ignore"):
-        x = np.divide(left, right)
-        if isinstance(x, np.ndarray):
-            x[np.isinf(x)] = 1
-            x[np.isnan(x)] = 1
-        elif np.isinf(x) or np.isnan(x):
-            x = 1
-    return x
-
-
-def log(a):
-    with np.errstate(divide="ignore", invalid="ignore"):
-        x = np.log(np.abs(a))
-        if isinstance(x, np.ndarray):
-            x[np.isinf(x)] = 1
-            x[np.isnan(x)] = 1
-        elif np.isinf(x) or np.isnan(x):
-            x = 1
-    return x
-
-
-def sqrt(a):
-    return np.sqrt(np.abs(a))
-
-
-def create_function(expression, n_var=2):
-    var_str = ",".join([f"x{i}" for i in range(n_var)])
-    func_str = f"lambda {var_str}: {expression}"
-    return eval(func_str)
 
 
 class Individual:
