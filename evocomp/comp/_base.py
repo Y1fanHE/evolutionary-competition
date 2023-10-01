@@ -38,6 +38,10 @@ def log(a):
     return x
 
 
+def sqrt(a):
+    return np.sqrt(np.abs(a))
+
+
 class Competition:
 
     def __init__(self,
@@ -84,9 +88,9 @@ class Competition:
         self.pset.addPrimitive(np.multiply,
                                2,
                                "mul")
-        self.pset.addPrimitive(divide,
-                               2,
-                               "div")
+        # self.pset.addPrimitive(divide,
+        #                        2,
+        #                        "div")
         self.pset.addPrimitive(np.negative,
                                1,
                                "neg")
@@ -96,9 +100,12 @@ class Competition:
         self.pset.addPrimitive(np.sin,
                                1,
                                "sin")
-        self.pset.addPrimitive(log,
+        self.pset.addPrimitive(sqrt,
                                1,
-                               "log")
+                               "sqrt")
+        # self.pset.addPrimitive(log,
+        #                        1,
+        #                        "log")
         self.pset.addEphemeralConstant("rnd",
                                        partial(random.randint, -10, 10))
         return self.pset
@@ -173,6 +180,9 @@ class Competition:
                    algorithm2: tuple = None,
                    sampler: tuple = None,
                    seed: int = None):
+        if seed == None:
+            seed = self.seed
+
         if algorithm1 == None:
             alg1 = self.alg1
         else:

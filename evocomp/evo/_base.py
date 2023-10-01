@@ -37,6 +37,10 @@ def log(a):
     return x
 
 
+def sqrt(a):
+    return np.sqrt(np.abs(a))
+
+
 def create_function(expression, n_var=2):
     var_str = ",".join([f"x{i}" for i in range(n_var)])
     func_str = f"lambda {var_str}: {expression}"

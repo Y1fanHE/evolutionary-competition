@@ -25,6 +25,8 @@ def de_rand_1_bin(problem: Problem,
     xl = problem.xl
     xu = problem.xu
 
+    archive = []
+
     population = [Individual(rng.uniform(xl,
                                          xu,
                                          n_var)) for _ in range(n_pop)]
@@ -73,6 +75,6 @@ def mut_differential(x1, x2, x3, F):
 def cx_binomial(x, y, CR, rng):
     n_var = len(x)
     maskbit = rng.random(n_var)
-    maskbit[rng.randint(n_var)] = 0
-    y[maskbit<CR] = x[maskbit<CR]
+    maskbit[rng.randint(n_var)] = 1
+    y[maskbit<1-CR] = x[maskbit<1-CR]
     return y
