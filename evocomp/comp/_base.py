@@ -217,7 +217,7 @@ class Competition:
         X, Y = np.meshgrid(x, x)
         Z = problem.func(X, Y)
 
-        plt.contour(X, Y, Z)
+        plt.contour(X, Y, Z, cmap="Greys_r")
         plt.colorbar()
         plt.scatter(pop1[:,0],
                     pop1[:,1],
