@@ -16,28 +16,6 @@ from evocomp.comp.samplers import all
 # TODO: make it flexible to use linear gp, pushgp, ...
 
 
-def divide(left, right):
-    with np.errstate(divide="ignore", invalid="ignore"):
-        x = np.divide(left, right)
-        if isinstance(x, np.ndarray):
-            x[np.isinf(x)] = 1
-            x[np.isnan(x)] = 1
-        elif np.isinf(x) or np.isnan(x):
-            x = 1
-    return x
-
-
-def log(a):
-    with np.errstate(divide="ignore", invalid="ignore"):
-        x = np.log(np.abs(a))
-        if isinstance(x, np.ndarray):
-            x[np.isinf(x)] = 1
-            x[np.isnan(x)] = 1
-        elif np.isinf(x) or np.isnan(x):
-            x = 1
-    return x
-
-
 def sqrt(a):
     return np.sqrt(np.abs(a))
 

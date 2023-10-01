@@ -6,7 +6,7 @@ on Sept. 12, 2023
 from evocomp.evo import de_rand_1_bin, particle_swarm_optimization
 from evocomp.comp import Competition
 from evocomp.comp.metrics import wasserstein_distance
-from evocomp.comp.samplers import last_evaluations
+from evocomp.comp.samplers import last
 from evocomp.comp.gp import simple
 
 
@@ -23,8 +23,9 @@ pso = (
     particle_swarm_optimization,  # pso
     dict(n_eval = 2000,           # parameters
          n_pop  = 20,
-         F      = 0.1,
-         CR     = 0.9),
+         w1     = 0.5,
+         w2     = 0.5,
+         c      = 0.1),
     "PSO"                         # alias
 )
 
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         metric      = wasserstein_distance, # distance metric
         algorithm1  = de,                   # two eas
         algorithm2  = pso,
-        sampler     = (last_evaluations, [20]),
+        sampler     = (last, [20]),
         lower_bound = -5,                   # bounds of search space
         upper_bound = 5,
         dimension   = 2,                    # dimension of search space
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         target     = "out.png",
         algorithm1 = de,
         algorithm2 = pso,
-        sampler    = (last_evaluations, [20]),
+        sampler    = (last, [20]),
         seed       = 1000
     )
 
