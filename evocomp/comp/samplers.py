@@ -1,3 +1,8 @@
+"""
+Samplers
+created by Yifan He (heyif@outlook.com)
+on Oct. 1, 2023
+"""
 def all(history, *args):
     return history
 

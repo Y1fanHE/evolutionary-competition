@@ -1,3 +1,8 @@
+"""
+Useful Utilities
+created by Yifan He (heyif@outlook.com)
+on Oct. 1, 2023
+"""
 from evocomp.evo._base import Problem
 import numpy as np
 
