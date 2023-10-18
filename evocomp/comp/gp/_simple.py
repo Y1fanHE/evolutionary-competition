@@ -78,9 +78,6 @@ def simple(pset: gp.PrimitiveSet,
     mstats.register("min", lambda x: round(np.min(x),3))
     mstats.register("max", lambda x: round(np.max(x),3))
 
-    logbook = tools.Logbook()
-    logbook.header = ["gen", "nevals"] + (mstats.fields if mstats else [])
-
     algorithms.eaSimple(pop,
                         toolbox_,
                         crossover_rate,

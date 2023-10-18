@@ -25,8 +25,6 @@ def de_rand_1_bin(problem: Problem,
     xl = problem.xl
     xu = problem.xu
 
-    archive = []
-
     population = [Individual(rng.uniform(xl,
                                          xu,
                                          n_var)) for _ in range(n_pop)]
