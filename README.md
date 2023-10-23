@@ -126,6 +126,12 @@ $$\sin(7)xy\log(\log{x^2}-\sin{y})$$
 
 <p align="center"><img src="img/eg4.svg" /></p>
 
+### Genetic Programming
+
+- random search
+- simple
+- map-elites
+
 ### Evolutionary Algorithms
 
 - random search
@@ -142,6 +148,6 @@ $$\sin(7)xy\log(\log{x^2}-\sin{y})$$
 - [x] write README file
 - [ ] check high dimension cases
 - [x] add multiprocessing
-- [ ] implement map-elite gp
+- [x] implement map-elite gp
 - [ ] add more eas
 - [ ] add new metrics
