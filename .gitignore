@@ -5,6 +5,7 @@
 *.png
 *.sol
 experiments/
+exp*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
