@@ -1,5 +1,5 @@
 """
-Differential Evolution
+DE: Differential Evolution
 created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """

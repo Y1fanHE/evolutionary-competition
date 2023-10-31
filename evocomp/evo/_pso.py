@@ -1,5 +1,5 @@
 """
-Particle Swarm Optimization
+PSO: Particle Swarm Optimization
 created by Yifan He (heyif@outlook.com)
 on Sept. 12, 2023
 """
