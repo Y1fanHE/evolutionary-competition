@@ -39,8 +39,6 @@ def shade(problem: Problem,
         # success parameters
         F_success, CR_success = [], []
         weight = []
-        if k >= H:
-            k = 0
 
         for index, individual in enumerate(population):
 
@@ -53,7 +51,7 @@ def shade(problem: Problem,
             xi = individual.parameters
 
             # pbest selection
-            xp = sel_pbest(population, p=pi, rng=rng)
+            xp = sel_pbest(population, p=pi, rng=rng)[0]
 
             # random selection
             x1, x2 = sel_random(population, k=2, rng=rng)
@@ -75,13 +73,16 @@ def shade(problem: Problem,
             if problem.n_eval >= n_eval:
                 break
 
-    # update expectation of F and CR
-    if len(F_success) > 0:
-        u = [F_success[i]*F_success[i]*weight[i] for i in range(len(F_success))]
-        v = [F_success[i]*weight[i] for i in range(len(F_success))]
-        F[k] = u / v
-        CR[k] = [CR_success[i]*weight[i] for i in range(len(CR_success))]
-        k += 1
+        # update expectation of F and CR
+        if len(F_success) > 0:
+            u = [F_success[i]*F_success[i]*weight[i] for i in range(len(F_success))]
+            v = [F_success[i]*weight[i] for i in range(len(F_success))]
+            F[k] = sum(u) / sum(v)
+            CR[k] = np.mean([CR_success[i]*weight[i] for i in range(len(CR_success))])
+            k += 1
+
+        if k >= H:
+            k = 0
 
     return problem.history
 
