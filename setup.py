@@ -28,6 +28,7 @@ setup(
         "pandas",
         "deap",
         "matplotlib",
-        "pygraphviz"
+        "pygraphviz",
+        "cmaes"
     ]
 )
