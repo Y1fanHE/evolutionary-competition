@@ -51,8 +51,7 @@ class Competition:
         else:
             pass
         self.seed = seed
-        self.pset = self._init_pset()
-        self.toolbox = self._init_toolbox()
+        self.objective_sensitive = False
         self.solution = None
 
     def _init_pset(self):
@@ -129,27 +128,45 @@ class Competition:
         try:
             archive1 = []
             archive2 = []
+            fit1 = np.inf
+            fit2 = np.inf
             for s in range(rep):
-                pop1 =\
-                sampler[0](alg1[0](problem,
-                                   seed=seed+s,
-                                   **alg1[1]),
-                           *sampler[1])[cols].values
-                pop2 =\
-                sampler[0](alg2[0](problem,
-                                   seed=seed+s,
-                                   **alg2[1]),
-                           *sampler[1])[cols].values
+                sample1 = sampler[0](alg1[0](problem,
+                                             seed=seed+s,
+                                             **alg1[1]),
+                                     *sampler[1])
+                sample2 = sampler[0](alg2[0](problem,
+                                             seed=seed+s,
+                                             **alg2[1]),
+                                     *sampler[1])
+                pop1 = sample1[cols].values
+                pop2 = sample2[cols].values
                 archive1.append(pop1)
                 archive2.append(pop2)
+                fit1 = min(fit1, sample1["f"].min())
+                fit2 = min(fit2, sample2["f"].min())
             archive1 = np.concatenate(archive1)
             archive2 = np.concatenate(archive2)
+            if self.objective_sensitive:
+                return metric(archive1, archive2), fit1==fit2
             return metric(archive1, archive2),
         except ValueError:
+            if self.objective_sensitive:
+                return 0, fit1==fit2
             return 0,
 
     def evolve(self, method: Callable, **kwargs):
-        self.solution = method(self.pset, self.toolbox, **kwargs)
+        objective_sensitive = kwargs.get("objective_sensitive", False)
+        if objective_sensitive:
+            self.objective_sensitive = objective_sensitive
+            self.weight = self.weight * 2
+        self.pset = self._init_pset()
+        self.toolbox = self._init_toolbox()
+        self.solution = method(
+            self.pset,
+            self.toolbox,
+            **kwargs
+        )
         return self.solution
 
     def plot_space(self,

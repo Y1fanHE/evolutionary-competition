@@ -24,6 +24,7 @@ def map_elites(pset: gp.PrimitiveSet,
                mut_tree_height: Sequence[int] = (0, 5),
                max_tree_height: int = 10,
                parallelism: int = None,
+               objective_sensitive: bool = False,
                return_archive: bool = False,
                seed: int = None,
                verbose: bool = False):
@@ -60,9 +61,16 @@ def map_elites(pset: gp.PrimitiveSet,
                       gp.mutUniform,
                       expr=toolbox_.expr_mut,
                       pset=pset)
-    toolbox_.register("describe",
-                      phenotypic_descriptor,
-                      pset=pset)
+    if not objective_sensitive:
+        print("NOT objective sensitive")
+        toolbox_.register("describe",
+                          phenotypic_descriptor,
+                          pset=pset)
+    else:
+        toolbox_.register("describe",
+                          sensitive_phenotypic_descriptor,
+                          phenotypic_descriptor=phenotypic_descriptor,
+                          pset=pset)
 
     toolbox_.decorate("mate",
                       gp.staticLimit(key=height,
@@ -176,3 +184,9 @@ def eaMapElites(population, toolbox, nfill, cxpb, mutpb, ngen, stats=None,
 
 def height(t):
     return t.height
+
+def sensitive_phenotypic_descriptor(individual, phenotypic_descriptor, pset):
+    is_obj_eq = individual.fitness.values[-1]
+    phn = phenotypic_descriptor(individual, pset)
+    phn_ = [i for i in phn] + [is_obj_eq]
+    return tuple(phn_)
