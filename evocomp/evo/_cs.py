@@ -9,11 +9,13 @@ from evocomp.evo._base import Problem, Individual
 from math import gamma as G
 
 
+# TODO: check implementation, performance is low
 def cuckoo_search(problem: Problem,
                   n_eval: int,
                   n_pop: int,
                   alpha: Union[float, Sequence[float]] = [0, 1],
                   beta: Union[float, Sequence[float]] = [0, 1],
+                  pa: float = 0.1,
                   logfile: str = None,
                   seed: int = None):
     problem.set_logfile(logfile)
@@ -35,7 +37,7 @@ def cuckoo_search(problem: Problem,
         for individual in population:
 
             # set parameters
-            alpha_i = 10**(-alpha) if isinstance(alpha, float) else rng.randint(*alpha)
+            alpha_i = alpha if isinstance(alpha, float) else rng.randint(*alpha)
             beta_i = beta if isinstance(beta, float) else rng.uniform(*beta)
 
             xi = individual.parameters
@@ -52,6 +54,18 @@ def cuckoo_search(problem: Problem,
             r_index = rng.randint(n_pop)
             if child.fitness < population[r_index].fitness:
                 population[r_index] = child
+
+            if problem.n_eval >= n_eval:
+                break
+
+        # replace worse individuals
+        sorted_idx = sorted(range(n_pop),
+                            key=lambda i: population[i].fitness,
+                            reverse=True)
+        for idx in sorted_idx[:int(n_pop*pa)]:
+            child = Individual(rng.uniform(xl, xu, n_var))
+            child = evaluate(child)
+            population[idx] = child
 
             if problem.n_eval >= n_eval:
                 break
