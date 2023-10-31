@@ -29,7 +29,7 @@ class Problem:
         self.n_eval = 0
 
     def evaluate(self, individual):
-        if self.input_mode == "vec":
+        if self.input_mode == "vector":
             individual.fitness = self.func(individual.parameters)
         elif self.input_mode == "args":
             args = list(individual.parameters)
