@@ -68,7 +68,7 @@ def shade(problem: Problem,
                 population[index] = child
                 F_success.append(Fi)
                 CR_success.append(CRi)
-                weight.append(individual.fitness-child.fitness)
+                weight.append(abs(individual.fitness-child.fitness))
 
             if problem.n_eval >= n_eval:
                 break
@@ -77,8 +77,9 @@ def shade(problem: Problem,
         if len(F_success) > 0:
             u = [F_success[i]*F_success[i]*weight[i] for i in range(len(F_success))]
             v = [F_success[i]*weight[i] for i in range(len(F_success))]
-            F[k] = sum(u) / sum(v)
-            CR[k] = np.mean([CR_success[i]*weight[i] for i in range(len(CR_success))])
+            if sum(v) != 0:
+                F[k] = sum(u) / sum(v)
+                CR[k] = np.mean([CR_success[i]*weight[i] for i in range(len(CR_success))])
             k += 1
 
         if k >= H:
