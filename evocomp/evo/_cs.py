@@ -37,7 +37,7 @@ def cuckoo_search(problem: Problem,
         for individual in population:
 
             # set parameters
-            alpha_i = alpha if isinstance(alpha, float) else rng.randint(*alpha)
+            alpha_i = alpha if isinstance(alpha, float) else rng.uniform(*alpha)
             beta_i = beta if isinstance(beta, float) else rng.uniform(*beta)
 
             xi = individual.parameters
