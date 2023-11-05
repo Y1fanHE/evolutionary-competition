@@ -10,3 +10,4 @@ from evocomp.evo._jade import jade
 from evocomp.evo._cs import cuckoo_search
 from evocomp.evo._pso import particle_swarm_optimization
 from evocomp.evo._cmaes import cma_es
+from evocomp.evo._abc import artificial_bee_colony
