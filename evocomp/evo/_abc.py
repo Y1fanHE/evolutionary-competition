@@ -95,11 +95,15 @@ def sel_random(population, k, rng):
 
 def sel_proportional(population, k, rng):
     p_sum = sum([ind.fitness for ind in population])
+    if p_sum:
+        p = [ind.fitness/p_sum for ind in population]
+    else:
+        p = None
 
     rs = rng.choice(len(population),
                     size=k,
                     replace=False,
-                    p=[ind.fitness/p_sum for ind in population])
+                    p=p)
     selected = [population[ri].parameters for ri in rs]
     return selected
 
