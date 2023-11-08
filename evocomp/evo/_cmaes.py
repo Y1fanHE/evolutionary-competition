@@ -19,7 +19,6 @@ def cma_es(problem: Problem,
     problem.set_history()
     rng = np.random.RandomState(seed)
 
-    evaluate = problem.evaluate
     p_evaluate = problem.p_evaluate
     n_var = problem.n_var
     xl = problem.xl
@@ -33,10 +32,9 @@ def cma_es(problem: Problem,
               population_size=n_pop,
               seed=seed)
 
-    population = [Individual(rng.uniform(xl,
-                                         xu,
-                                         n_var)) for _ in range(n_pop)]
-    population = p_evaluate(population)
+    population = p_evaluate([Individual(np.clip(opt.ask(),
+                                                    xl,
+                                                    xu)) for _ in range(n_pop)])
 
     while problem.n_eval < n_eval:
         opt.tell([(i.parameters,i.fitness) for i in population])
